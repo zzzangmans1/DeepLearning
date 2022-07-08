@@ -60,5 +60,12 @@
 
 ## 3 속성별 관련도 추출하기
 
-이 중에서 우리에게 필요한 정보를 추출해 보겠습니다. 먼저 
+이 중에서 우리에게 필요한 정보를 추출해 보겠습니다.
+
+|Source|Description|
+|--|--|
+|df_corr = df.corr()|먼저 데이터 사이의 상관관계를 df_coor 변수에 저장합니다. |
+|df_corr_sort = df_corr.sort_values('SalePrice', ascending=False)|집 값과 관련이 큰 것부터 순서대로 정렬해 df_corr_sort 변수에 저장합니다. |
+|df_corr_sort['SalePrice'].head(10)|집값과 관련도가 가장 큰 열 개의 속성들을 출력합니다.|
+
 ---
