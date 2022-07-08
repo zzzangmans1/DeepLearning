@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 # 실습 1주택 가격 예측하기
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -60,3 +61,25 @@ checkpointer = ModelCheckpoint(filepath=modelpath, monitor='val_loss', verbose=0
 
 # 실행 관련 설정을 하는 부분입니다. 전체의 20%를 검증셋으로 설정합니다.
 history = model.fit(X_train, y_train, validation_split=0.25, epochs=2000, batch_size=32, callbacks=[early_stopping_callback, checkpointer])
+
+# 학습 결과를 시각화하기 위해 예측 값과 실제 값, 실행 번호가 들어갈 빈 리스트를 만들고 25개의 샘플로부터 얻은 결과를 채워 넣곘습니다.
+real_prices = []
+pred_prices = []
+X_num = []
+
+n_iter = 0
+Y_prediction = model.predict(X_test).flatten()
+for i in range(25):
+  real = y_test[i]
+  prediction = Y_prediction[i]
+  print("실제가격: {:.2f}, 예상가격: {:.2f}".format(real, prediction))
+  real_prices.append(real)
+  pred_prices.append(prediction)
+  n_iter = n_iter + 1
+  X_num.append(n_iter)
+
+# 그래프를 통해 샘플로 뽑은 25개의 값을 비교해 봅니다.
+plt.plot(X_num, pred_prices, label='predicted price')
+plt.plot(X_num, real_prices, label='real price')
+plt.legend()
+plt.show()
