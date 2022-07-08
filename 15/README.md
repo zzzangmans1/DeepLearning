@@ -6,14 +6,12 @@
 
 ##1  데이터 파악하기
 
-- import pandas as pd
-- 필요한 api 를 불러옵니다.
-- !git clone https://github.com/taehojo/data.git
-- 깃허브에 준비된 데이터를 가져옵니다.
-- df = pd.read_csv("./data/house_train.csv")
-- 집 값 데이터를 불러옵니다.
-- df
-- 출력합니다.
+|Source|Description|
+|--|--|
+|import pandas as pd|필요한 api 를 불러옵니다.|
+|!git clone https://github.com/taehojo/data.git|깃허브에 준비된 데이터를 가져옵니다.|
+|df = pd.read_csv("./data/house_train.csv")|집 값 데이터를 불러옵니다.|
+|df|출력합니다.|
 
 ---
 
