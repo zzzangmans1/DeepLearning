@@ -6,6 +6,7 @@
 
 ## 1  데이터 파악하기
 
+
 |Source|Description|
 |--|--|
 |import pandas as pd|필요한 api 를 불러옵니다.|
@@ -13,7 +14,9 @@
 |df = pd.read_csv("./data/house_train.csv")|집 값 데이터를 불러옵니다.|
 |df|출력합니다.|
 
+<div align=center>
 ![image](https://user-images.githubusercontent.com/52357235/177986304-5fec8406-2b05-43ea-972b-bdc1f6c95422.png)
+</div>
 
 총 80개의 속성으로 이루어져 있고 마지막 열이 우리의 타깃인 집 값(SalePrice)입니다.
 모두 1,460개의 샘플이 들어 있습니다.
@@ -22,8 +25,9 @@
 |Source|Description|
 |--|--|
 |df.dtypes|각 데이터가 어떤 유형으로 되어 있는지 알아본다|
-
+<div align=center>
 ![image](https://user-images.githubusercontent.com/52357235/177986573-7cf901a2-64f1-4fee-a8ee-65e25210327f.png)
+</div>
 
 ---
 
