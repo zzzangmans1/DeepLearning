@@ -8,12 +8,13 @@
 
 import pandas as pd
 
-// 깃허브에 준비된 데이터를 가져옵니다.
+- 깃허브에 준비된 데이터를 가져옵니다.
 !git clone https://github.com/taehojo/data.git
 
-// 집 값 데이터를 불러옵니다.
+- 집 값 데이터를 불러옵니다.
 df = pd.read_csv("./data/house_train.csv")
 
 df
 
 ---
+
