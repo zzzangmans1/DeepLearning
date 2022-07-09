@@ -87,3 +87,27 @@ to_categorical(클래스, 클래스의 개수) 형식으로 지정합니다.
 
 
 [실습1 MNIST 손글씨 인식하기: 데이터 전처리](https://github.com/zzzangmans1/DeepLearning/blob/main/16/16_1.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178100022-2ff33e70-364a-4071-a6ec-9f1572e1e1d5.png)
+
+## 2 딥러닝 기본 프레임 만들기
+
+이제 불러온 데이터를 실행할 차례입니다. 
+총 6만 개의 학습셋과 1만 개의 테스트셋을 불러와 속성 값을 지닌 X, 클래스 값을 지닌 y로 구분하는 작업을 다시 한 번 정리하면 다음과 같습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178100095-879a74af-313e-4d2d-9cf5-e277b0fac11e.png)
+
+이제 딥러닝을 실행하고자 프레임을 설정합니다. 총 784개의 속성이 있고 열 개의 클래스가 있습니다. 
+따라서 다음과 같이 딥러닝 프레임을 만들 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178100218-7e62fbe6-25b2-4c24-a06d-07825e50d4a2.png)
+
+입력값(input_dim)이 784개, 은닉층이 512개, 출력이 열 개인 모델입니다. 
+활성화 함수로 은닉층에서는 relu를, 출력층에서는 softmax를 사용했습니다.
+그리고 딥러닝 실행 환경을 위해 오차 함수로 categorical_crossentropy, 최적화 함수로 adam을 사용하겠습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178100277-8bbd0b11-173c-4d0c-87d9-bde696f73bdf.png)
+
+모델 실행에 앞서 먼저 성과를 저장하고, 모델의 최적화 단계에서는 학습을 자동 중단하게끔 설정하겠습니다.
+
+
