@@ -86,4 +86,4 @@ to_categorical(클래스, 클래스의 개수) 형식으로 지정합니다.
 ![image](https://user-images.githubusercontent.com/52357235/178099780-a6431302-4786-4983-aa9d-0c6ec5831026.png)
 
 
-
+[실습1 MNIST 손글씨 인식하기: 데이터 전처리](https://github.com/zzzangmans1/DeepLearning/blob/main/16/16_1.py)
