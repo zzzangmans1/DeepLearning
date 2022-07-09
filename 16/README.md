@@ -73,7 +73,7 @@ reshape(총 샘플 수, 1차원 속성의 개수) 형식으로 지정합니다.
 |X_train = X_train / 255|값을 255로 나누어 줍니다.|
 |print("class : %d " % (y_train[0])|실제로 이 숫자의 레이블이 어떤지 y_train[0]을 출력하겠습니다.|
 
-![image](https://user-images.githubusercontent.com/52357235/178099780-a6431302-4786-4983-aa9d-0c6ec5831026.png)
+![image](https://user-images.githubusercontent.com/52357235/178099866-f5c2a185-e28e-4b1b-ae65-8fa2fe79f739.png)
 
 지금 우리가 열어 본 이미지의 클래스는 [5] 였습니다. 이를 [0,0,0,0,0,1,0,0,0,0,0]으로 바꾸어야 합니다.
 이를 가능하게 해 주는 함수가 바로 np_utils.to_categorical() 함수입니다.
@@ -84,8 +84,8 @@ to_categorical(클래스, 클래스의 개수) 형식으로 지정합니다.
 |y_train = to_categorical(y_train, 10)|y_train을 리스트 형식으로 변경합니다.|
 |y_test = to_categorical(y_test, 10)|y_test를 리스트 형식으로 변경합니다.|
 
-![Uploading image.png…]()
 
-# 실습1 MNIST 손글씨 인식하기: 데이터 전처리
+![image](https://user-images.githubusercontent.com/52357235/178099780-a6431302-4786-4983-aa9d-0c6ec5831026.png)
+
 
 
