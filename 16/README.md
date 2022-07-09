@@ -109,5 +109,27 @@ to_categorical(클래스, 클래스의 개수) 형식으로 지정합니다.
 ![image](https://user-images.githubusercontent.com/52357235/178100277-8bbd0b11-173c-4d0c-87d9-bde696f73bdf.png)
 
 모델 실행에 앞서 먼저 성과를 저장하고, 모델의 최적화 단계에서는 학습을 자동 중단하게끔 설정하겠습니다.
+열 번 이상 모델 성능이 향상되지 않으면 자동으로 학습을 중단합니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178100701-e3b318f7-d571-4571-9f84-8f0a83cd1f9a.png)
+
+샘플 200개를 모두 30번 실행하게끔 설정합니다.
+그리고 테스트셋으로 최종 모델의 성과를 측정해 그 값을 출력합니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178101214-51ef223f-3d7e-408b-bd01-76af957a3b3a.png)
+
+실행 결과를 그래프로 표현해 보겠습니다. 
+이번에는 학습셋의 정확도 대신 학습셋의 오차를 그래프로 표현하겠습니다. 학습셋의 오차는 1에서 학습셋의 정확도를 뺀 값입니다. 
+좀 더 세밀한 변화를 볼 수 있게 학습셋의 오차와 테스트셋의 오차를 그래프 하나로 나타내겠습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178101468-6f5eac59-450c-4d1f-909b-07321953272a.png)
+
+[실습1 MNIST 손글씨 인식하기: 기본프레임](https://github.com/zzzangmans1/DeepLearning/blob/main/16/16_2.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178101747-e00e82f6-cb5f-486c-9e8b-f7f3c0ace56f.png)
+
+## 3 컨볼루션 신경망(CNN)
+
+컨볼루션 신경망은 입력된 이미지에서 다시 한 번 특징을 추출하기 위해 커널(슬라이딩 윈도)을 도입하는 기법입니다.
 
 
