@@ -145,3 +145,8 @@ word_size라는 변수를 만든 후 길이를 세는 len() 함수를 이용해 
 
 최적화 함수로 adam()을 사용하고 오차 함수로는 binary_crossentropy()를 사용했습니다.
 그리고 2번 반복하고 나서 정확도를 계산해 출력하게 했습니다.
+
+## 실습1 영화 리뷰가 긍정적인지 부정적인지를 예측하기
+[실습1 영화 리뷰가 긍정적인지 부정적인지를 예측하기](https://github.com/zzzangmans1/DeepLearning/blob/main/17/17.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178229268-be0810b9-a9aa-4855-a7ff-c5698ab8f391.png)
