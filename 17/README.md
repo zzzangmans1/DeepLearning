@@ -33,3 +33,53 @@
 
 ![image](https://user-images.githubusercontent.com/52357235/178201542-b39cbfa1-0d6d-4831-9adb-01ce48de5944.png)
 
+**document_count()** 함수를 이용하면 총 몇 개의 문장이 들어 있는지도 셀 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178203336-e03f85cb-b43e-46a0-b8e8-a035d02d8b80.png)
+
+**word_docs()** 함수를 통해 각 단어들이 몇 개의 문장에 나오는지 세어서 출력할 수도 있습니다.
+출력되는 순서는 랜덤입니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178203920-fcc5dbea-8119-4313-be1d-705134924f60.png)
+
+![image](https://user-images.githubusercontent.com/52357235/178204061-991a163c-ea94-479b-9b41-cbd3875c0398.png)
+
+각 단어에 매겨진 인덱스 값을 출력하려면 **word_index()** 함수를 사용하면 됩니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178205265-f2778446-98a6-450b-b7a9-c576289440de.png)
+
+![image](https://user-images.githubusercontent.com/52357235/178205291-7df57f26-8bbe-4b3b-b8a9-eccd8e426589.png)
+
+## 2 단어의 원-핫 인코딩
+
+단순히 단어의 출현 빈도만 가지고는 해당 단어가 문장의 어디에서 왔는지, 각 단어의 순서는 어떠했는지 등에 관한 정보를 얻을 수 없습니다.
+단어가 문장의 다른 요소와 어떤 관계를 가지고 있는지 알아보는 방법이 필요합니다.
+이러한 기법 중에서 가장 기본적인 방법은 **원-핫 인코딩**을 알아보겠습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178206917-6c5a7721-8c83-4458-867a-254b4b0a0b7e.png)
+
+이제 각 단어를 원-핫 인코딩 방식으로 표현해 보겠습니다.
+케라스에서 제공하는 Tokenizer의 **texts_to_sequences()** 함수를 사용해서 앞서 만들어진 토큰의 인덱스로만 채워진 새로운 배열을 만들어 줍니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178210532-432ae6ca-3695-48e5-82eb-7db0004218dd.png)
+
+이제 1~6의 정수로 인덱스되어 있는 것을 0과 1로만 이루어진 배열로 바꾸어 주는 **to_categorical()** 함수를 사용해 원-핫 인코딩 과정을 진행합니다.
+배열 맨 앞에 0이 추가되므로 단어 수보다 1이 더 많에 인덱스 숫자를 잡아 주는 것에 유의하기 바랍니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178211624-a93a45fd-6906-4518-9bda-bf92b68e195e.png)
+
+## 3 단어 임베딩
+
+원-핫 인코딩과 함께 공부해야 할 것이 한 가지 더 있습니다. 
+원-핫 인코딩을 그대로 사용하면 벡터의 길이가 너무 길어진다는 단점이 있습니다.
+예를 들어 1만 개의 단어 토큰으로 이루어진 말뭉치를 다룬다고 할 때, 이 데이터를 원-핫 인코딩으로 벡터화하면 9,999개의 0과 하나의 1로 이루어진 단어 벡터를 1만 개나 만들어야 합니다.
+이러한 공간적 낭비를 해결하기 위해 등장한 것이 **단어 임베딩** 이라는 방법입니다.
+**단어 임베딩**은 주어진 배열을 정해진 길이로 압축시킵니다.
+얻은 결과가 밀집된 정보를 가지고 있고 공간의 낭비가 적다는 것을 알 수 있습니다. 
+이러한 결과가 가능한 이유는 각 단어 간의 유사도를 계산했기 때문입니다.
+예를 들어 happy라는 단어는 bad보다 good에 더 가깝고, cat이라는 단어는 good보다는 dog에 가깝가는 것을 고려해 각 배열을 새로운 수치로 바꾸어 주는 것입니다.
+이 과정은 케라스에서 제공하는 **Embedding()** 함수를 사용하면 간단히 해낼 수 있습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178214899-f039b4e0-1a71-4a6d-9306-d03561005887.png)
+
+
