@@ -82,4 +82,24 @@
 
 ![image](https://user-images.githubusercontent.com/52357235/178214899-f039b4e0-1a71-4a6d-9306-d03561005887.png)
 
+Embedding() 함수는 입력과 출력의 크기를 나타내는 두 개의 매개변수가 있어야 합니다.
+앞 예제에서 Embedding(16, 4)는 입력될 총 단어 수는 16, 임베딩 후 출력되는 벡터 크기는 4로 하겠다는 의미입니다.
+여기에 단어를 매번 얼마나 입력할지 추가로 지정할 수 있습니다.
+Embedding(16, 4, input_length=2)라고 하면 총 입력되는 단어 수는 16개이지만 매번 두 개씩만 넣겠다는 의미입니다.
+
+## 4 텍스트를 읽고 긍정, 부정 예측하기
+
+실습해 볼 과제는 영화를 보고 남긴 리뷰를 딥러닝 모델로 학습해서 각 리뷰가 긍정적인지 부정적인지를 예측하는 것입니다.
+먼저 짧은 리뷰 열 개를 불러와 각각 긍정이면 1이라는 클래스를, 부정적이면 0이라는 클래스로 지정합니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178218593-896d903f-3c01-44bb-9532-760401b86224.png)
+
+그다음 앞서 배운 토큰화 과정을 진행합니다.
+케라스에서 제공하는 Tokenizer() 함수의 **fit_on_texts**를 이용해 각 단어를 하나의 토큰으로 변환합니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178219238-e6f27651-a97d-466d-8b39-95a51c5e49dc.png)
+
+![image](https://user-images.githubusercontent.com/52357235/178219272-77a2c3c2-d34a-47ed-8e19-290d74a4c1ab.png)
+
+
 
