@@ -39,7 +39,7 @@ history = model.fit(X_train, y_train, batch_size=40, epochs=100, validation_spli
 print("\n Test Accuracy: %.4f" % (model.evaluate(X_test, y_test)[1]))
 
 # 학습셋과 테스트셋의 오차를 저장합니다.
-y_vloss = history.history['val_accuracy']
+y_vloss = history.history['val_loss']
 y_loss = history.history['loss']
 
 # 그래프로 표현해 보겠습니다.
