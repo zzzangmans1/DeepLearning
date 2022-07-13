@@ -93,3 +93,31 @@ LSTM의 활성화 함수로는 tanh를 주로 사용하므로 actiavation='tanh'
 ![image](https://user-images.githubusercontent.com/52357235/178689478-6713f858-9ef9-41b2-a0ff-78e75ece75d4.png)
 
 [실습! LSTM을 이용해 로이터 뉴스 카테고리 분석하기](https://github.com/zzzangmans1/DeepLearning/blob/main/18/18_1.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178694382-e38258cf-72da-44a4-9951-ffd679817de6.png)
+
+## LSTM과 CNN의 조합을 이용한 영화 리뷰 분류하기
+
+이번에 사용할 인터넷 영화 데이터베이스(Internet Movie DataBase, IMDB)는 영화와 관련된 정보와 출연진 정보, 개봉 정보, 영화 후기, 평점까지 매우 폭넓은 데이터가 저장된 자료입니다.
+영화에 관해 남긴 2만 5,000여 개의 영화 리뷰가 담겨 있으며, 해당 영화를 긍정적으로 평가했는지 혹은 부정적으로 평가했는지도 담겨 있습니다.
+앞서 다루었던 로이터뉴스 데이터와 마찬가지로 각 단어에 대한 전처리를 마친 상태입니다.
+데이터셋에서 나타나는 빈도에 따라 번호가 정해지므로 빈도가 높은 데이터를 불러와 학습시킬 수 있습니다.
+데이터 전처리 과정은 로이터 뉴스 데이터와 거의 같습니다.
+다만 클래스가 긍정 또는 부정 두 가지뿐이라 원-핫 인코딩 과정이 없습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178694845-f7f86220-49b0-41f1-9c9b-3991436458b6.png)
+
+이제 모델을 다음과 같이 설정합니다.
+model.summary() 함수를 이용해 현재 설정된모델의 구조를 살펴보겠습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178696574-0222c693-a0e3-4511-89d6-a567acf9e5e8.png)
+
+![image](https://user-images.githubusercontent.com/52357235/178696604-5e06e8ce-e669-429d-b4f7-6dbb7afc405a.png)
+
+출력 결과에서 우리가 아직 보지 못한 부분은 Conv1D와 MaxPooling1D입니다.
+앞서 Conv2D와 MaxPooling2D는 앞에서 다루었습니다.
+하지만 2차원 배열을 가진 이미지와 다르게 지금 다루고 있는 데이터는 배열 형태로 이루어진 1차원이라는 차이가 있습니다.
+Conv1D는 Conv2D의 개념을 1차원으로 옮긴 것입니다.
+컨볼루션 층이 1차원이고 이동하는 배열도 1차원입니다.
+
+![image](https://user-images.githubusercontent.com/52357235/178698313-5a63c213-db82-4780-9062-0eb4bbcf3a70.png)
