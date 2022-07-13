@@ -121,3 +121,7 @@ Conv1D는 Conv2D의 개념을 1차원으로 옮긴 것입니다.
 컨볼루션 층이 1차원이고 이동하는 배열도 1차원입니다.
 
 ![image](https://user-images.githubusercontent.com/52357235/178698313-5a63c213-db82-4780-9062-0eb4bbcf3a70.png)
+
+[실습1 LSTM과 CNN을 조합해 영화 리뷰 분류하기](https://github.com/zzzangmans1/DeepLearning/blob/main/18/18_2.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178701095-b752ca4a-cf41-43e5-9bfe-14ae22c15621.png)
