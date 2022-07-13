@@ -143,3 +143,6 @@ RNN은 여러 개의 입력 값이 있을 때 이를 바로 처리하는 것이 
 이러한 방식으로 매 출력마다 모든 입력 값을 두루 활용하게 하는 것이 어텐션입니다.
 마지막 셀에 모든 입력이 집중되던 RNN의 단점을 훌륭히 극복해 낸 알고리즘입니다.
 
+[attention() 함수 실습 예제](https://github.com/zzzangmans1/DeepLearning/blob/main/18/18_3.py)
+
+![image](https://user-images.githubusercontent.com/52357235/178707384-405152db-b330-49b4-b59a-f0e4febe3639.png)
