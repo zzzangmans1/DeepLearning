@@ -92,4 +92,4 @@ LSTM의 활성화 함수로는 tanh를 주로 사용하므로 actiavation='tanh'
 
 ![image](https://user-images.githubusercontent.com/52357235/178689478-6713f858-9ef9-41b2-a0ff-78e75ece75d4.png)
 
-
+[실습! LSTM을 이용해 로이터 뉴스 카테고리 분석하기](https://github.com/zzzangmans1/DeepLearning/blob/main/18/18_1.py)
