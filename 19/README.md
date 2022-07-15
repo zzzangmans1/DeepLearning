@@ -241,4 +241,78 @@ print('epoch:%d' % i, 'd_loss:%.4f' % d_loss, 'g_loss:%.4f' % g_loss)
 이제 실행할 준비를 마쳤습니다.
 앞서 배운 GAN의 모든 과정을 한곳에 모으면 다음과 같습니다.
 
-[실습1 GAN 모델 만들기]()
+[실습1 GAN 모델 만들기](https://github.com/zzzangmans1/DeepLearning/blob/main/19/19_1.py)
+
+![image](https://user-images.githubusercontent.com/52357235/179204200-0301627a-3b93-41af-95ce-402cdf3e6c89.png)
+
+![image](https://user-images.githubusercontent.com/52357235/179204152-f0b4fbad-0399-4b85-930e-a32698263091.png)
+
+## 4 이미지의 특징을 추출하는 오토인코더
+
+딥러닝을 이용해 가상의 이미지를 만드는 또 하나의 유명한 알고리즘이 있습니다.
+바로 **오토인코더**(Auto-Encoder, AE)입니다.
+지금까지 설명한 GAN을 이해했다면 오토인코더의 핵심적인 부분은 이미 거의 이해한 셈입니다.
+
+오토인코더는 GAN과 비슷한 결과를 만들지만, 다른 성질을 지니고 있습니다.
+GAN이 세상에 존재하지 않는 완전한 가상의 것을 만들어 내는 반면에, 오토인코더는 입력 데이터의 특징을 효율적으로 담아낸 이미지를 만들어 냅니다.
+예를 들어 GAN으로 사람의 얼굴을 만들면 진짜 같아 보여도 실제로는 존재하지 않는 완전한 가상 이미지가 만들어집니다.
+하지만 오토인코더로 사람의 얼굴을 만들 경우 초점이 좀 흐릿하고 윤곽이 불명확하지만 사람의 특징을 유추할 수 있는 것들이 모여 이미지가 만들어집니다.
+
+그렇다면 오토인코더는 과연 어디에 활용할 수 있을까요? 영상 의학 분야 등 아직 데이터 수가 충분하지 않은 분야에서 사용될 수 있습니다.
+학습 데이터는 현실 세계의 정보를 담고 있어야 하므로,  세상에 존재하지 않는 가상의 것을 집어넣으면 예상치 못한 결과를 가져올 수 있습니다.
+하지만 데이터의 특징을 잘 담아내는 오토인코더라면 다릅니다.
+부족한 학습 데이터 수를 효과적으로 늘려 주는 효과를 기대할 수 있지요.
+오토인코더의 학습은 GAN의 학습보다 훨씬 쉽습니다. 
+이전 절에서 GAN의 원리를 이해했다면 매우 수월하게 익힐 수 있을 것입니다.
+
+입력한 이미지와 똑같은 크기로 출력층을 만들었습니다.
+그리고 입력층보다 적은 수의 노드를 가진 은닉층을 중간에 넣어서 차원을 줄여 줍니다.
+이때 소실된 데이터를 복원하기 위해 학습을 시작하고, 이 과정을 통해 입력 데이터의 특징을 효율적으로 응축한 새로운 출력이 나오는 원리입니다.
+가상 핵심이 되는 인코딩과 디코딩 과정을 코딩해 보면 다음과 같습니다.
+
+```python
+# 생성마 모델 만들기
+autoencoder = Sequential()
+
+# 인코딩 부분
+autoencoder.add(Conv2D(16, kernel_size=3, padding='same', input_shape=(28, 28, 1), activation='relu')) # 1
+autoencoder.add(MaxPooling2D(pool_size=2, padding='same')) # 2
+autoencoder.add(Conv2D(8, kernel_size=3, activation='relu', padding='same')) # 3
+autoencoder.add(MaxPooling2D(pool_size=2, padding='same') # 4
+autoencoder.add(Conv2D(8, kernel_size=3, strides=2, padding='same', activation='relu')) # 5
+
+# 디코딩 부분
+autoencoder.add(Conv2D(8, kernel_size=3, padding='same', activation='relu')) # 6
+autoencoder.add(UpSampling2D()) # 7
+autoencoder.add(Conv2D(8, kernel_size=3, padding='same', activation='relu')) # 8
+autoencoder.add(UpSampling2D()) # 9
+autoencoder.add(Conv2D(16, kernel_size=3, activation='relu')) # 10
+autoencoder.add(UpSampling2D()) # 11
+autoencoder.add(Conv2D(1, kernel_size=3, padding='same', activation='sigmoid')) # 12
+
+# 전체 구조 확인
+autoencoder.summary() # 13
+```
+
+1에서5는 입력된 값의 차원을 축소시키는 인코딩 부분이고 6에서12는 다시 차원을 점차 늘려 입력 값과 똑같은 크기의 출력 값을 내보내는 디코딩 부분입니다.
+두 부분이 하나의 Sequential() 함수로 쭉 이어져 오토인코더 모델을 만듭니다.
+인코딩 파트에서 입력 크기를 줄이는 방법으로 맥스 풀링을 사용했습니다(2, 4).
+반대로 디코딩 부분에서는 크기를 늘리기 위해 앞에서 배운 UpSampling을 썼습니다(7, 9, 11).
+
+여기서 놓치지 말아야 할 것은 1에서 입력된 28X28 크기가 층을 지나면서 어떻게 바뀌는지 파악하는 것입니다.
+입력된 값을 MaxPooling 층 2, 4를 지나면서 절반씩 줄어들 것이고, Upsampling 층 7, 9, 11을 지나면서 두 배로 늘어납니다.
+그렇다면 이상한 점이 하나있습니다.
+어째서 MaxPooling 층은 두 번이 나오고 Upsampling 층은 세 번이나 나올까요? 이대로라면 처음 입력한 28X28보다 더 크게 출력되는 것은 아닐까요?
+해답은 10에 있습니다. 잘 보면 padding 옵션이 없습니다.
+크기를 유지시켜 주는 패딩 과정이 없으므로 커널이 적용되면서 크기가 줄어듭니다.
+이를 다시 확인하기 위해 전체 구조를 확인해 보면(13) 다음과 같습니다.
+
+![image](https://user-images.githubusercontent.com/52357235/179203425-d8eeda9a-4b1e-4ac7-bd94-ecb8f06448c7.png)
+
+전체 구조에서 14에서 15로 넘어갈 때 다른 Conv2D 층과 달리 벡터 값이 줄어들었음에 주의해야 합니다.
+15의 Conv2D 층에는 padding이 적용되지 않았고 kernel_size = 3이 설정되어 있으므로 3 X 3 커널이 훑고 지나가면서 벡터의 차원을 2만큼 줄였습니다.
+마지막 층의 벡터 값이 처음 입력 값과 같은 28 X 28 크기가 되는 것을 확인하면 모든 준비가 된 것입니다.
+
+[실습1 오토인코더 실습하기]()
+
+
