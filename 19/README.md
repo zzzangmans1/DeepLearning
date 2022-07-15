@@ -313,6 +313,8 @@ autoencoder.summary() # 13
 15의 Conv2D 층에는 padding이 적용되지 않았고 kernel_size = 3이 설정되어 있으므로 3 X 3 커널이 훑고 지나가면서 벡터의 차원을 2만큼 줄였습니다.
 마지막 층의 벡터 값이 처음 입력 값과 같은 28 X 28 크기가 되는 것을 확인하면 모든 준비가 된 것입니다.
 
-[실습1 오토인코더 실습하기]()
+[실습1 오토인코더 실습하기](https://github.com/zzzangmans1/DeepLearning/blob/main/19/19_2.py)
 
+![image](https://user-images.githubusercontent.com/52357235/179206244-ec6dfa8d-dc6c-42da-a22c-634fea0c91d8.png)
 
+실행 결과에서 첫 번째 주링 테스트로 사용된 원본 이미지, 두 번째 줄이 원본의 특징을 고스란히 담은 채 만들어진 오토인코더 이미지입니다.
