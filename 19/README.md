@@ -37,18 +37,47 @@ DCGAN의 제안자들은 학습에 꼭 필요한 옵션들을 제시했는데, �
 tanh() 함수를 쓰면 출력되는 값을 -1에서1 사이로 맞출 수 있습니다.
 판별자에 입력될 MNIST 손글씨의 픽셀 범위도 -1에서1로 맞추면 판별 조건이 모두 갖추어집니다.
 지금까지 설명한 내용을 코드로 정리하면 다음과 같습니다.
+
 ```python
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, BatchNormalization, Reshape, UpSampling2D, Conv2D, Activation
 
 generator = Sequential() # 모델 이름을 generator로 정하고 Sequential() 함수를 호출
-generator.add(Dense(128*7*7, input_dim=100, activation=LeakyReLU(0.2)))
-generator.add(BatchNormalization())
-generator.add(Reshape((7, 7, 128)))
-generator.add(UpSampling2D())
-generator.add(Conv2D(64, kernel)size=5, padding='same'))
-generator.add(BatchNormalization())
-generator.add(Activation(LeakyReLU(0.2)))
-generator.add(UpSampling2D())
-generator.add(Conv2D(1, kernel_size=5, padding='same', activation='tanh'))
+generator.add(Dense(128*7*7, input_dim=100, activation=LeakyReLU(0.2))) # 1
+generator.add(BatchNormalization()) # 2
+generator.add(Reshape((7, 7, 128))) # 3
+generator.add(UpSampling2D()) # 4
+generator.add(Conv2D(64, kernel)size=5, padding='same')) # 5
+generator.add(BatchNormalization()) # 6
+generator.add(Activation(LeakyReLU(0.2))) # 7
+generator.add(UpSampling2D()) # 8
+generator.add(Conv2D(1, kernel_size=5, padding='same', activation='tanh')) # 9
 ```
+
+먼저 **1**부터 차례로 확인해 보겠습니다.
+
+여기서 128은 임의로 정한 노드의 수입니다.
+128이 아니어도 충분한 노드를 마련해 주면 됩니다.
+input_dim=100은 100차원 크기의 랜덤 벡터를 준비해 집어넣으라는 의미입니다.
+꼭 100이 아니어도 좋습니다.
+여기서 주의할 부분은 7X7입니다.
+이는 이미지의 최초 크기를 의미합니다.
+MNIST 손글씨 이미지의 크기는 28 X 28인데, 왜 7 X 7 크기의 이미지를 넣어 줄까요?
+**4**와 **8**을 보면 답이 있습니다.
+UpSampling2D() 함수를 사용했습니다.
+UpSampling2D() 함수는 이미지의 가로세로 크기를 두 배씩 늘려 줍니다.
+7 X 7 **4** 레이어를 지나며 그 크기가 14 X 14가 되고, **8** 레이어를 지나며 28 X 28이 되는 것입니다.
+이렇게 작은 크기의 이미지를 점점 늘려 가면서 컨볼루션 층(**5**, **9**)을 지나치게 하는 것이 DCGAN의 특징입니다.
+**3**은 컨볼루션 레이어가 받아들일 수 있는 형태로 바꾸어 주는 코드입니다. 
+Conv2D() 함수의 input_shape 부분에 들어갈 형태로 정해줍니다.
+**4**, **5** 그리고 **8**, **9**는 두 배씩 업샘플링을 한 후 컨볼루션 과정을 처리합니다.
+커널 크기로 5로 해서 5 X 5 크기의 커널을 썼습니다.
+바로 앞서 설명했듯이 padding='same' 조건때문에 모자라는 부분은 자동으로 0이 채워집니다.
+**1**과 **7**에서 활성화 함수로 LeakyReLU를 썼습니다.
+GAN에서는 기존에 사용하던 ReLU() 함수를 쓸 경우 학습이 불안정해지는 경우가 많아, ReLU()를 조금 변형한 LeakyReLU() 함수를 씁니다.
+
+0.2로 설정하면 0보다 작을 경우 0.2를 곱하라는 의미입니다.
+
+**2**, **6**에서는 데이터의 배치를 정규 분포로 만드는 배치 정규화가 진행됩니다.
+끝으로 **9**에서 한 번 더 컨볼루션 과정을 거친 후 판별자로 값을 넘길 준비를 마칩니다.
+앞서 이야기한 대로 활성화 함수는 tanh() 함수를 썼습니다.
