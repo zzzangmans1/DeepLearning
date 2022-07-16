@@ -1,0 +1,77 @@
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras import Input, models, layers, optimizers, metrics
+from tensorflow.layers import Dense, Flatten, Activation, Dropout
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras.callbacks import EarlyStopping
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 깃허브에 준비된 데이터를 가져옵니다.
+!git clone https://github.com/taehojo/data-ch20.git
+
+# 학습셋의 변형을 설정하는 부분입니다.
+train_datagen = ImageDataGenerator(rescale=1./255,
+                                   horizontal_flip=True,
+                                   width_shift_range=0.1,
+                                   height_shift_range=0.1,
+                                   )
+train_generator = train_datagen.flow_from_directory(
+  './data-ch20/train',
+  target_size=(150, 150),
+  batch_size=5,
+  class_mode='binary')
+
+# 테스트셋의 정규화를 설정합니다.
+test_datagen = ImageDataGenerator(rescale=1./255)
+
+test_generator = test_datagen.flow_from_directory(
+  './data-ch20/test',
+  target_size=(150, 150),
+  batch_size=5,
+  class_mode='binary')
+  
+# VGG16 모델을 불러옵니다.
+transfer_model = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+transfer_model.trainable = False
+
+# 우리의 모델을 설정합니다.
+finetune_model = models.Sequential()
+finetune_model.add(transfer_model)
+finetune_model.add(Flatten())
+finetune_model.add(Dense(64))
+finetune_model.add(Activation('relu'))
+finetune_model.add(Dropout(0.5))
+finetune_model.add(Dense(1))
+finetune_model.add(Activation('sigmoid'))
+finetune_model.summary()
+
+# 모델의 실행 옵션을 설정합니다.
+finetune_model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(learning_rate=0.0002), metrics=['accuracy'])
+
+# 학습의 조기 중단을 설정합니다.
+early_stopping_callback = EarlyStopping(monitor='val_loss', patience=5)
+
+# 모델을 실행합니다.
+history = finetune_model.fit(
+    train_generator,
+    epochs=20,
+    validation_data=test_generator,
+    validation_steps=10,
+    callbacks=[early_stopping_callback])
+    
+# 검증셋과 학습셋의 오차를 저장합니다.
+y_vloss = history.history['val_loss']
+y_loss = history.history['loss']
+
+# 그래프로 표현해 봅니다.
+x_len = np.arange(len(y_loss))
+plt.plot(x_len, y_vloss, marker='.', c="red", label='Testset_loss')
+plt.plot(x_len, y_loss, marker='.', c="blue", label='Trainset_loss')
+
+# 그래프에 그리드를 주고 레이블을 표시하겠습니다.
+plt.legend(loc='upper rigth')
+plt.grid()
+plt.xlabel('epoch')
+plt.ylabel('loss')
+plt.show()
