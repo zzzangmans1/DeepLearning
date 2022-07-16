@@ -167,4 +167,9 @@ finetune_model.summary()
 
 앞서 넘겨받은 파라미터들(14,714,688)을 그대로 유지한 채 최종 분류를 위해서만 새롭게 학습하는 것을 알 수 있습니다.
 
-[실습1 전이 학습 실습하기]()
+[실습1 전이 학습 실습하기](https://github.com/zzzangmans1/DeepLearning/blob/main/20/20_2py)
+
+![image](https://user-images.githubusercontent.com/52357235/179345840-c4ea2a1e-b8ab-4ece-99e2-439711fab833.png)
+
+![image](https://user-images.githubusercontent.com/52357235/179345832-0fbe89ea-7305-41c0-bcfb-075f0b25ae53.png)
+
