@@ -106,3 +106,65 @@ history = model.fit(train_generator, # 2
 ``` python
 !pip install Scipy
 ```
+
+[실습1 치매 환자의 뇌인지 일반인의 뇌인지 예측하기](https://github.com/zzzangmans1/DeepLearning/blob/main/20/20_1.py)
+
+![image](https://user-images.githubusercontent.com/52357235/179344713-107351bf-67dd-43be-82ff-b1feb28fbb64.png)
+
+## 2 전이 학습으로 모델 성능 극대화하기
+
+이미지넷은 1,000가지 종류로 나뉜 120만 개가 넘는 이미지를 놓고 어떤 물체인지 맞히는 '이미지넷 이미지 인식 대회(ILSVRC)'에 사용되는 데이터셋입니다.
+MNIST와 더불어 가장 유명한 데이터셋 중 하나이지요.
+전체 크기가 200GB에 이를 만큼 커다란 이 데이터를 놓고 그동안 수많은 그룹이 경쟁하며 최고의 분류기를 만들기 위해 노력해 왔습니다.
+치매/일반인 뇌 사진 분류 프로젝트를 하고 있는 우리에게도 이 자료가 중요한 이유는 지금부터 이 방대한 양의 데이터셋에서 추출한 정보를 가져와서 우리 예측률을 극대화하는 '전이 학습'을 할 것이기 때문입니다.
+
+전이 학습은 앞서 언급한 대로 '기존의 학습 결과를 가져와서 유사한 프로젝트에 사용하는 방법'을 의미합니다.
+뇌 사진만 다루는 치매 분류기를 만드는데, 뇌 사진과 관련 없는 수백만 장의 이미지넷 학습 정보가 큰 역할을 하는 이유는 '형태'를 구분하는 기본적인 학습이 되어 있기 때문입니다.
+예를 들어 딥러닝은 학습이 시작되면 어떤 픽셀의 조합이 '선'이고 어떤 형태의 그룹이 '면'이 되는지부터 파악해야 합니다.
+아무런 정보도 없이 MRI 사진 판별을 시작한다면 이러한 기본적인 정보를 얻어 내는 데도 많은 시간을 쏟아야 합니다.
+전이 학습이 해결해 주는 것이 바로 이 부분입니다.
+대용량의 데이터를 이용해 학습한 가중치 정보를 가져와 내 모델에 적용한 후 프로젝트를 계속해서 진행할 수 있는 것입니다.
+먼저 대규모 데이터셋에서 학습된 기존의 네트워크를 불러옵니다.
+CNN 모델의 앞쪽을 이 네트워크로 채웁니다.
+그리고 뒤쪽 레이어에서 내 프로젝트와 연결합니다.
+그리고 이 두 네트워크가 잘 맞물리게끔 미세 조정을 하면 됩니다.
+
+이제 앞서 우리가 만든 모델에 이미지넷 데이터셋에서 미리 학습된 모델인 VGGNet을 가지고 오는 예제를 실행해 보겠습니다.
+VGGNet은 옥스포드 대학의 연구 팀 VGG에 의해 개발된 모델로, 2014년 이미지넷 이미지 인식 대회에서 2위를 차지한 모델입니다.
+학습 구조에 따라 VGG16, VGG19 등 이름이 주어졌는데, 우리는 VGG16을 사용하겠습니다.
+
+** VGG 외에도 ResNet, Inception, MobilNet, DenseNet 등 많은 모델을 불러올 수 있습니다.
+각 네트워크에 대한 상세한 설명은 [케라스 공식 사이트](https://keras.io/application/)를 참조하세요.
+
+다음은 모델 이름을 transfer_model로 정하고 VGG16을 불러온 모습입니다.
+include_top은 전체 VGG16의 마지막 층, 즉 분류를 담당하는 곳을 불러올지 말지를 정하는 옵션입니다.
+우리가 만든 로컬 네트워크를 연결할 것이므로 False로 설정합니다.
+또한, 불러올 부분은 새롭게 학습되는 것이 아니므로 학습되지 않도록 transfer_model.trainable 옵션 역시 False로 설정합니다.
+
+``` python
+transfer_model = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
+transfer_model.trainable = False
+transfer_model.summary()
+```
+
+![image](https://user-images.githubusercontent.com/52357235/179345148-bc9e267a-1411-4f94-a149-1e5ebcc7b922.png)
+
+학습 가능한 파라미터(Trainable params)가 없음을 확인합니다. 이제 우리의 로컬 네트워크를 다음과 같이 만들어 줍니다.
+
+```python
+finetune_model = models.Sequential()
+finetune_model.add(transfer_model)
+finetune_model.add(Flattend())
+finetune_model.add(Dense(64))
+finetune_model.add(Activation('relu'))
+finetune_model.add(Dropout(0.5))
+finetune_model.add(Dense(1))
+finetune_model.add(Activation('sigmoid'))
+finetune_model.summary()
+```
+
+![image](https://user-images.githubusercontent.com/52357235/179345275-1221cdad-e755-4fef-937c-424a802970f2.png)
+
+앞서 넘겨받은 파라미터들(14,714,688)을 그대로 유지한 채 최종 분류를 위해서만 새롭게 학습하는 것을 알 수 있습니다.
+
+[실습1 전이 학습 실습하기]()
