@@ -50,4 +50,59 @@ train_dategen = ImageDataGenerator(rescale=1./255,
 -shear_range : 좌표 하나를 고정시키고 다른 몇 개의 좌표를 이동시키는 변환을 합니다.
 -fill_mode : 이미지를 축소 또는 회전하거나 이동할 때 생기는 빈 공간을 어떻게 채울지 결정합니다. nearest 옵션을 선택하면 가장 비슷한 색으로 채워집니다.
 
+단, 이 모든 인자를 다 적용하면 불필요한 데이터를 만들게 되어 오히려 학습 시간이 늘어난다는 것에 주의해야 합니다.
+주어진 데이터의 특성을 잘 파악한 후 이에 맞게 사용하는 것이 좋습니다.
+우리는 좌우의 차이가 그다지 중요하지 않은 뇌 사진을 이용할 것이므로 수평으로 대칭시키는 horizontal_flip 인자를 사용하겠습니다.
+그리고 width_shift, height_shift 인자를 이용해 조금씩 좌우로 수평 이동시킨 이미지도 만들어 사용하겠습니다.
+참고로 데이터 부풀리기는 학습셋에만 적용하는 것이 좋습니다.
+테스트셋은 실제 정보를 그대로 유지하게 하는 편이 과적합의 위험을 줄일 수 있기 때문입니다.
+테스트셋은 다음과 같이 정규화만 진행해 줍니다.
 
+``` python
+test_datagen = ImageDataGenerator(rescale=1./255)
+```
+
+이미지 생성 옵션을 정하고 나면 실제 데이터가 있는 곳을 알려 주고 이미지를 불러오는 작업을 해야 합니다.
+이를 위해 flow_from_directory() 함수를 사용하겠습니다.
+
+``` python
+train_generator = train_datagen.flow_from_directory(
+    './data-ch20/train', # 학습셋이 있는 폭더 위치
+    target_size=(150, 150), # 이미지 크기 
+    batch_size=5,
+    class_mode='binary') # 치매/정상 이진 분류이므로 바이너리 모드로 실행
+```
+
+같은 과정을 거쳐서 테스트셋도 생성해 줍니다.
+
+``` python
+test_generator = test_datagen.flow_from_directory(
+     './data-ch20/test', # 테스트셋이 있는 폴더 위치
+     target_size=(150, 150),
+     batch_size=5,
+     class_mode='binary')
+```
+
+모델 실행을 위한 옵션을 만들어 줍니다. 
+옵티마이저로 Adam을 선택하는데, 이번에는 케라스 API의 1 optimizers 클래스를 이용해 학습률을 따로 지정해 보았습니다.
+조기 중단을 설정하고 model.fit()을 실행하는데, 이때 학습셋과 검증셋을 조금 전 만들어 준 2 train_generator와 3 test_generator로 지정합니다.
+
+``` python
+# 모델의 실행 옵션을 설정합니다.
+model.compile(loss='binary_crossentropy', optimizer=optimizers.Adam(learning_rate=0.0002), metrics=['accuracy']) # 1
+
+# 학습의 조기 중단을 설정합니다.
+early_stopping_callback = EarlyStopping(monitor='val_loss', patience=5)
+
+# 모델을 실행합니다.
+history = model.fit(train_generator, # 2
+                    epochs=100,
+                    validation_data=test_generator, # 3
+                    validation_steps=10,
+                    callbacks=[early_stopping_callback]) 
+```
+
+** 이 실습에선 사이파이(SciPy) 라이브러리가 필요합니다. 코랩의 경우 기본으로 제공하지만, 주피터 노트북을 이용해 실습 중이라면 다음 명령으로 라이브러리 설치해야 합니다.**
+``` python
+!pip install Scipy
+```
