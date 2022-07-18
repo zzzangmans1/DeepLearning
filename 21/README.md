@@ -86,3 +86,7 @@ explainer.save(output, 저장될 폴더, 저장될 이름)
 이를 크게 잡으면 조금 더 넓은 범위의 결과가 나오고, 작게 잡으면 조금 더 세밀한 부분을 가리키는 결과가 나옵니다.
 
 [실습1 설명 가능한 딥러닝](https://github.com/zzzangmans1/DeepLearning/blob/main/21/21.py)
+
+![image](https://user-images.githubusercontent.com/52357235/179480728-21bc3593-2e05-4478-a458-abc5f419d6c3.png)
+
+이 코드에서 patch_size = 40 부분을 다른 크기로 조절하면 결과가 조금씩 달라집니다.
