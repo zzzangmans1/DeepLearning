@@ -86,6 +86,6 @@ plt.figure(figsize=(20, 20))
 for img_path in glob.glob('./data/img/*_occ1.jpg'):
   images_occ1s.append(mpimg.imread(img_path))
   
-for i, image in enumrate(images_occ1s):
+for i, image in enumerate(images_occ1s):
   plt.subplot(5, 5, i+1)
   plt.imshow(image)
