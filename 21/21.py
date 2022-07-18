@@ -32,14 +32,14 @@ for i, image_o in enumerate(images_originals):
 model = VGG16(weights="imagenet", include_top=True)
 
 # 원본 이미지 이름과 Imagenet에서의 해당 이미지 인덱스
-input_list = ["maltese", "persian_cat", squirrel_monkey", "grand_piano", "yawl" ]
-imagenet_index = ["153, "283", "382", "579", "914"]
+input_list = ["maltese", "persian_cat", "squirrel_monkey", "grand_piano", "yawl" ]
+imagenet_index = ["153", "283", "382", "579", "914"]
 
 # 그레이디언트 CAM 알고리즘 선택
 explainer = GradCAM()
 
 # 그레이디언트 CAM 알고리즘이 적용된 이미지가 들어갈 빈 리스트 만드릭
-image_cams = []
+images_cams = []
 
 # 그레이디언트 CAM 알고리즘 실행
 for l, i in zip(input_list, imagenet_index):
