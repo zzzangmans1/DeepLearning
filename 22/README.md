@@ -124,4 +124,11 @@ df = pd.DataFrame(ids, columns=["Id", "SalePrice"])
 df.to_csv(str(outdir + filename + '_submission.csv'), index=False)
 ```
 
-[실습1 캐글에 제출할 결과 만들기]()
+[실습1 캐글에 제출할 결과 만들기](https://github.com/zzzangmans1/DeepLearning/blob/main/22/22.py)
+
+이코드를 실행해 구글 코랩 폴더에 (연도)(월)(일)-(시)(분)(초)_submission.csv 파일이 만들어 졌다면 결과를 캐글에 제출할 준비가 되었습니다.
+
+## 4 결과 제출하기
+
+다시 경진대회 웹 페이지로 돌아가서 이번에는 Submit Predictions를 클릭합니다.
+
